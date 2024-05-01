@@ -21,21 +21,24 @@ public class OrderProducer {
     private KafkaTemplate<String, OrderMessage> kafkaTemplate;
 
     public void publish(OrderMessage message) {
-        ListenableFuture<SendResult<String, OrderMessage>> listenableFuture = (ListenableFuture<SendResult<String, OrderMessage>>) kafkaTemplate.send("t-commodity-order", message.getOrderNumber(), message);
-
-        CompletableFuture<SendResult<String, OrderMessage>> completableFuture = toCompletableFuture(listenableFuture);
-
-        completableFuture.thenAccept(result -> {
-            LOGGER.info("Order {}, item {} published successfully", message.getOrderNumber(), message.getItemName());
-        }).exceptionally(ex -> {
-            LOGGER.warn("Order {}, item {} failed to publish because {}", message.getOrderNumber(), message.getItemName(), ex.getMessage());
-            return null;
-        });
+//        ListenableFuture<SendResult<String, OrderMessage>> listenableFuture = (ListenableFuture<SendResult<String, OrderMessage>>) kafkaTemplate.send("t-commodity-order", message.getOrderNumber(), message);
+//
+//        CompletableFuture<SendResult<String, OrderMessage>> completableFuture = toCompletableFuture(listenableFuture);
+//
+//        completableFuture.thenAccept(result -> {
+//            LOGGER.info("Order {}, item {} published successfully", message.getOrderNumber(), message.getItemName());
+//        }).exceptionally(ex -> {
+//            LOGGER.warn("Order {}, item {} failed to publish because {}", message.getOrderNumber(), message.getItemName(), ex.getMessage());
+//            return null;
+//        });
+        kafkaTemplate.send("t-commodity-order",message.getOrderNumber(),message);
+        LOGGER.info("Order {}, item {} published successfully", message.getOrderNumber(), message.getItemName());
+        
     }
 
-    private <T> CompletableFuture<T> toCompletableFuture(ListenableFuture<T> listenableFuture) {
-        CompletableFuture<T> completableFuture = new CompletableFuture<>();
-        listenableFuture.addCallback(completableFuture::complete, completableFuture::completeExceptionally);
-        return completableFuture;
-    }
+//    private <T> CompletableFuture<T> toCompletableFuture(ListenableFuture<T> listenableFuture) {
+//        CompletableFuture<T> completableFuture = new CompletableFuture<>();
+//        listenableFuture.addCallback(completableFuture::complete, completableFuture::completeExceptionally);
+//        return completableFuture;
+//    }
 }

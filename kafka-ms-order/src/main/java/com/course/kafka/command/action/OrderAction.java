@@ -8,7 +8,6 @@ import com.course.kafka.entity.Order;
 import com.course.kafka.entity.OrderItem;
 import com.course.kafka.repository.OrderItemRepository;
 import com.course.kafka.repository.OrderRepository;
-import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
